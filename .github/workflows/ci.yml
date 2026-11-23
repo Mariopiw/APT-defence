@@ -1,0 +1,56 @@
+name: Python security lab tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify Bash script syntax
+        run: bash -n scripts/*.sh
+      - name: Unit and regression tests
+        run: python -m unittest discover -s tests -v
+      - name: Offline detection smoke test
+        run: |
+          python -m vault hunt \
+            --log samples/remote.log \
+            --json output/alerts.json \
+            --report output/incident_report.md
+          test -s output/alerts.json
+          test -s output/incident_report.md
+      - name: HMAC seal, verify and tamper negative test
+        run: |
+          python -m vault new-key output/ci-hmac.key
+          python -m vault seal \
+            --log samples/remote.log \
+            --key output/ci-hmac.key \
+            --ledger output/ci-ledger.json \
+            --anchor output/ci-anchor.txt
+          python -m vault verify \
+            --log samples/remote.log \
+            --key output/ci-hmac.key \
+            --ledger output/ci-ledger.json \
+            --anchor output/ci-anchor.txt
+          cp samples/remote.log output/tampered.log
+          printf 'tampered\n' >> output/tampered.log
+          if python -m vault verify \
+            --log output/tampered.log \
+            --key output/ci-hmac.key \
+            --ledger output/ci-ledger.json \
+            --anchor output/ci-anchor.txt; then
+            echo "ERROR: tampering was not detected" >&2
+            exit 1
+          fi

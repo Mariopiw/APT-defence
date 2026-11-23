@@ -1,0 +1,8 @@
+2026-11-22T14:00:00+00:00 ip=192.0.2.44 host=ssh-laptop tag=sshd[1501]: msg=Failed password for user1 from 203.0.113.77 port 30000 ssh2
+2026-11-22T14:00:25+00:00 ip=192.0.2.44 host=ssh-laptop tag=sshd[1501]: msg=Failed password for user1 from 203.0.113.77 port 30001 ssh2
+2026-11-22T14:00:50+00:00 ip=192.0.2.44 host=ssh-laptop tag=sshd[1501]: msg=Failed password for user1 from 203.0.113.77 port 30002 ssh2
+2026-11-22T14:01:15+00:00 ip=192.0.2.44 host=ssh-laptop tag=sshd[1501]: msg=Failed password for user1 from 203.0.113.77 port 30003 ssh2
+2026-11-22T14:01:40+00:00 ip=192.0.2.44 host=ssh-laptop tag=sshd[1501]: msg=Failed password for user1 from 203.0.113.77 port 30004 ssh2
+2026-11-22T14:02:20+00:00 ip=192.0.2.44 host=ssh-laptop tag=sshd[1501]: msg=Accepted publickey for user1 from 203.0.113.77 port 30123 ssh2
+2026-11-22T14:02:30+00:00 ip=192.0.2.44 host=ssh-laptop tag=apt-guardian: msg=vault.alert={"type":"apt_guardian_alert","alert_id":"APT-0123456789abcdef","severity":"critical"}
+2026-11-22T14:03:20+00:00 ip=192.0.2.44 host=ssh-laptop tag=systemd[1]: msg=Started apt-daily.service
